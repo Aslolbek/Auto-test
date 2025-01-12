@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Forma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb; /* Soya rang - eng ochiq ranglardan */
+        }
+
+        header {
+            background-color: #1abc9c; /* Oqim yashil rang */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            background-color: #16a085; /* Biroz o'zgargan rang */
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #1abc9c; /* Hover uchun chiroyli ko'rinish */
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 32px;
+            color: #333;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px; /* Form elementlari orasini kengaytirdim */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1abc9c;
+            color: white;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Admin Panel</h1>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="/subject">Yangi Mavzu Qo'shish</a>
+        <a href="/test">Yangi Test Qo'shish</a>
+        <a href="/open/register">Yangi Admin Qo'shish</a>
+    </nav>
+
+    <!-- Main Content -->
+    <h1>Test Forma</h1>
+    <form id="testForm">
+        <label for="topic">Test Mavzusi:</label>
+        <select id="topic" name="topic" required>
+            <!-- Mavzular serverdan keladi -->
+            <% subjects.forEach(subject => { %>
+                <option value="<%= subject._id %>"><%= subject.name %></option>
+            <% }) %>
+        </select>
+
+        <label for="question">Savol:</label>
+        <input type="text" id="question" name="question" required>
+
+        <label for="options">Variantlar:</label>
+        <input type="text" id="option1" name="options[]" placeholder="Variant 1" required>
+        <input type="text" id="option2" name="options[]" placeholder="Variant 2" required>
+        <input type="text" id="option3" name="options[]" placeholder="Variant 3" required>
+        <input type="text" id="option4" name="options[]" placeholder="Variant 4" required>
+
+        <label for="correctAnswer">To'g'ri javob:</label>
+        <select id="correctAnswer" name="correctAnswer" required>
+            <option value="0">Variant 1</option>
+            <option value="1">Variant 2</option>
+            <option value="2">Variant 3</option>
+            <option value="3">Variant 4</option>
+        </select>
+
+        <button type="submit">Testni yuborish</button>
+    </form>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Admin Panel</p>
+    </div>
+
+    <script>
+        // Formani yuborish
+        document.getElementById("testForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Formani default yuborishni to'xtatadi
+
+            const topic = document.getElementById("topic").value; // Mavzu ID'si
+            const question = document.getElementById("question").value;
+            const options = [
+                document.getElementById("option1").value,
+                document.getElementById("option2").value,
+                document.getElementById("option3").value,
+                document.getElementById("option4").value,
+            ];
+            const correctAnswer = parseInt(document.getElementById("correctAnswer").value);
+
+            const formData = {
+                topic: topic, // Mavzu ID'si
+                question: question,
+                options: options,
+                correctAnswer: correctAnswer,
+            };
+
+            try {
+                const response = await fetch("http://localhost:2000/submit-test", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                alert(result.message); // Serverdan qaytgan javobni ko'rsatish
+            } catch (error) {
+                console.error("Xatolik yuz berdi:", error);
+                alert("Test yuborishda xatolik yuz berdi!");
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Forma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Forma</h1>
+    <form id="testForm">
+        <label for="topic">Test Mavzusi:</label>
+        <input type="text" id="topic" name="topic" required>
+
+        <label for="question">Savol:</label>
+        <input type="text" id="question" name="question" required>
+
+        <label for="options">Variantlar:</label>
+        <input type="text" id="option1" name="options[]" placeholder="Variant 1" required>
+        <input type="text" id="option2" name="options[]" placeholder="Variant 2" required>
+        <input type="text" id="option3" name="options[]" placeholder="Variant 3" required>
+        <input type="text" id="option4" name="options[]" placeholder="Variant 4" required>
+
+        <label for="correctAnswer">To'g'ri javob:</label>
+        <select id="correctAnswer" name="correctAnswer" required>
+            <option value="0">Variant 1</option>
+            <option value="1">Variant 2</option>
+            <option value="2">Variant 3</option>
+            <option value="3">Variant 4</option>
+        </select>
+
+        <button type="submit">Testni yuborish</button>
+    </form>
+
+    <script>
+        document.getElementById("testForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Formani default yuborishni to'xtatadi
+
+            const topic = document.getElementById("topic").value;
+            const question = document.getElementById("question").value;
+            const options = [
+                document.getElementById("option1").value,
+                document.getElementById("option2").value,
+                document.getElementById("option3").value,
+                document.getElementById("option4").value,
+            ];
+            const correctAnswer = parseInt(document.getElementById("correctAnswer").value);
+
+            const formData = {
+                topic: topic,
+                question: question,
+                options: options,
+                correctAnswer: correctAnswer,
+            };
+
+            try {
+                const response = await fetch("http://localhost:2000/submit-test", { // O'zingizning serveringizga murojaat qiling
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+                alert(result.message); // Serverdan qaytgan javobni ko'rsatish
+            } catch (error) {
+                console.error("Xatolik yuz berdi:", error);
+                alert("Test yuborishda xatolik yuz berdi!");
+            }
+        });
+    </script>
+</body>
+</html> -->

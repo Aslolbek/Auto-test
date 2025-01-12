@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mavzular ro'yxati</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e0f7fa; /* Yengil ko'k fon */
+      color: #004d40; /* To'q yashil matn */
+    }
+    .container {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #00796b; /* Yashil rang */
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+    .topic-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .topic-list li {
+      margin: 15px 0;
+      text-align: center;
+    }
+    .topic-list button {
+      padding: 15px 30px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: background-color 0.3s, transform 0.3s;
+      width: 100%;
+      max-width: 300px;
+    }
+    .topic-list button:hover {
+      background-color: #004d40; /* Hover holatida to'q yashil rang */
+      transform: scale(1.05); /* Bosish effektida kattalashadi */
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mavzular ro'yxati</h1>
+
+    <ul class="topic-list">
+      <% topics.forEach(topic => { %>
+        <li>
+          <button onclick="selectTopic('<%= topic._id %>')">
+            <%= topic.name %>
+          </button>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+
+  <script>
+    const apiUrl = "http://localhost:2000"; // Serverning asosiy URL'ini kiriting
+
+    // Mavzu tanlanganda testlarni yuklash uchun funksiyani chaqirish
+    function selectTopic(topicId) {
+      // Bu funksiya keyinchalik test yuklash sahifasiga yo'naltiradi yoki so'rovni jo'natadi
+      window.location.href = `${apiUrl}/testlist/${topicId}`;
+    }
+  </script>
+
+</body>
+</html>

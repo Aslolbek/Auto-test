@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa; /* Ochiq ko'k fon */
+            color: #004d40; /* To'q yashil matn */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #00796b; /* Yashil rang */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        nav {
+            background-color: #004d40; /* To'q yashil rang */
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #00796b; /* Hover effektida yashil rang */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 20px;
+            flex-grow: 1; /* Boshqa kontentdan joy olish */
+        }
+
+        .stat-card {
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card h3 {
+            margin-bottom: 15px;
+            color: #004d40; /* To'q yashil rang */
+            font-size: 22px;
+        }
+
+        .stat-card p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .stat-card span {
+            font-weight: bold;
+            font-size: 26px;
+            color: #0288d1; /* To'q ko'k rang */
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #00796b; /* Yashil rang */
+            color: white;
+            margin-top: auto; /* Footerni sahifaning pastki qismiga joylashtirish */
+        }
+
+        .action-card {
+            background-color: #ffffff;
+            padding: 20px;
+            margin: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+        }
+
+        .action-card button {
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .action-card button:hover {
+            background-color: #004d40;
+        }
+
+        /* Responsiv dizayn */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stat-card, .action-card {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Admin Panel</h1>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        
+        <a href="/users">Foydalanuvchilarni Ko'rish</a>
+        <a href="/topics">Mavzularni Ko'rish</a>
+    </nav>
+
+    <!-- Qidiruv paneli -->
+    <div style="text-align: center; margin: 20px;">
+        <input type="text" id="search" placeholder="Mavzu yoki Testni Qidiring..." onkeyup="searchFunction()" style="padding: 10px; font-size: 16px; width: 80%; max-width: 400px;">
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="container">
+        <!-- Mavzular soni -->
+        <div class="stat-card">
+            <h3>Mavzular soni</h3>
+            <p><span><%= subjectCount %></span></p>
+        </div>
+
+        <!-- Testlar soni -->
+        <div class="stat-card">
+            <h3>Testlar soni</h3>
+            <p><span><%= testCount %></span></p>
+        </div>
+
+        <!-- Foydalanuvchilar soni -->
+        <div class="stat-card">
+            <h3>Foydalanuvchilar soni</h3>
+            <p><span><%= userCount %></span></p>
+        </div>
+    </div>
+
+    <!-- Actions Section -->
+    <div class="container">
+        <!-- Yangi mavzu yaratish -->
+        <div class="action-card">
+            <h3>Yangi Mavzu Qo'shish</h3>
+            <button onclick="window.location.href='/subject'">Yaratish</button>
+        </div>
+
+        <!-- Yangi test yaratish -->
+        <div class="action-card">
+            <h3>Yangi Test Qo'shish</h3>
+            <button onclick="window.location.href='/test'">Yaratish</button>
+        </div>
+
+        <!-- Yangi admin qo'shish -->
+        <div class="action-card">
+            <h3>Yangi Admin Qo'shish</h3>
+            <button onclick="window.location.href='/open/register'">Qo'shish</button>
+        </div>
+    </div>
+
+  
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Admin Panel</p>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        
+        // Qidiruv funksiyasi
+        function searchFunction() {
+            var input, filter, cards, card, i, txtValue;
+            input = document.getElementById('search');
+            filter = input.value.toUpperCase();
+            cards = document.getElementsByClassName('stat-card');
+
+            for (i = 0; i < cards.length; i++) {
+                card = cards[i];
+                txtValue = card.textContent || card.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test</h1>
+        <% if (tests && tests.length > 0) { %>
+            <div id="testSection">
+                <!-- Savol va javoblar ko'rsatiladi -->
+            </div>
+            <div id="result" class="result hidden"></div>
+            <button id="checkBtn" onclick="checkAnswer()">Tekshirish</button>
+            <button id="nextBtn" class="hidden" onclick="showNextQuestion()">Keyingisi</button>
+            <div id="finalResult" class="hidden">
+                <h3>Natija: <span id="scorePercentage"></span>%</h3>
+                <p><span id="correctAnswers"></span> to'g'ri javoblar, <span id="incorrectAnswers"></span> noto'g'ri javoblar.</p>
+            </div>
+        <% } else { %>
+            <p><%= message || "Testlar mavjud emas." %></p>
+        <% } %>
+    </div>
+
+    <script>
+        // Serverdan testlarni olish
+        const questions = <%- JSON.stringify(tests) %>; // JSON massivini uzatish
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+
+        // Savolni ko‘rsatish funksiyasi
+        function showQuestion(index) {
+            const testSection = document.getElementById("testSection");
+            const question = questions[index];
+            testSection.innerHTML = ` 
+                <div class="question">
+                    <p>${index + 1}. ${question.question}</p>
+                    ${question.options.map((option, i) => `
+                        <input type="radio" name="answer" value="${i}" id="option${i}">
+                        <label for="option${i}">${option}</label><br>
+                    `).join("")}
+                </div>
+            `;
+            document.getElementById("result").classList.add("hidden");
+            document.getElementById("checkBtn").classList.remove("hidden");
+            document.getElementById("nextBtn").classList.add("hidden");
+        }
+
+        // Javobni tekshirish funksiyasi
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            const resultDiv = document.getElementById("result");
+
+            if (!selectedOption) {
+                alert("Iltimos, javobni tanlang!");
+                return;
+            }
+
+            const userAnswer = parseInt(selectedOption.value);
+            const correctAnswer = questions[currentQuestionIndex].correctAnswer;
+
+            // Javobni userAnswers ro'yxatiga qo'shish
+            userAnswers.push({
+                questionIndex: currentQuestionIndex,
+                userAnswer: userAnswer,
+                correctAnswer: correctAnswer
+            });
+
+            if (userAnswer === correctAnswer) {
+                resultDiv.textContent = "To‘g‘ri javob!";
+                resultDiv.className = "result correct";
+            } else {
+                resultDiv.textContent = `Noto‘g‘ri. To‘g‘ri javob: ${questions[currentQuestionIndex].options[correctAnswer]}`;
+                resultDiv.className = "result incorrect";
+            }
+
+            // "Keyingisi" tugmasini ko'rsatish
+            document.getElementById("nextBtn").classList.remove("hidden");
+            document.getElementById("checkBtn").classList.add("hidden");
+            resultDiv.classList.remove("hidden");
+        }
+
+        // Keyingi savolni ko‘rsatish funksiyasi
+        function showNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion(currentQuestionIndex);
+            } else {
+                // Barcha savollar tugadi
+                document.getElementById("testSection").innerHTML = "<p>Barcha savollar tugadi!</p>";
+
+                // Natijalarni hisoblash
+                const resultData = calculateResults();
+
+                // Natijalarni foydalanuvchiga ko'rsatish
+                displayFinalResults(resultData);
+
+                // API-ga post so'rovi yuborish
+                sendResultsToAPI(resultData);
+
+                document.getElementById("checkBtn").classList.add("hidden");
+                document.getElementById("nextBtn").classList.add("hidden");
+            }
+        }
+
+        // Natijani hisoblash
+        function calculateResults() {
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
+
+            userAnswers.forEach(answer => {
+                if (answer.userAnswer === answer.correctAnswer) {
+                    correctAnswers++;
+                } else {
+                    incorrectAnswers++;
+                }
+            });
+
+            const result = (correctAnswers / questions.length) * 100;
+            return {
+                userId: '677c0997f2b4bc9cb95e3229',
+                topicId: '<%= topicId %>',
+                correctAnswers: correctAnswers,
+                incorrectAnswers: incorrectAnswers,
+                result: result
+            };
+        }
+
+        // Natijalarni foydalanuvchiga ko'rsatish
+        function displayFinalResults(resultData) {
+            document.getElementById("scorePercentage").textContent = resultData.result.toFixed(2);
+            document.getElementById("correctAnswers").textContent = resultData.correctAnswers;
+            document.getElementById("incorrectAnswers").textContent = resultData.incorrectAnswers;
+            document.getElementById("finalResult").classList.remove("hidden");
+        }
+
+        // Natijalarni API-ga yuborish
+        function sendResultsToAPI(resultData) {
+            fetch('http://localhost:2000/submit-result', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(resultData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Natija serverga yuborildi:", data);
+            })
+            .catch(error => {
+                console.error("API ga yuborishda xato:", error);
+            });
+        }
+
+        // Birinchi savolni ko'rsatish
+        if (questions && questions.length > 0) {
+            showQuestion(currentQuestionIndex);
+        } else {
+            console.error("Testlar bo'sh yoki noto'g'ri formatda.");
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
