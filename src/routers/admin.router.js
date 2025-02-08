@@ -1,13 +1,14 @@
 const { Router } = require("express")
-const { openRegister, openLogin, register, login } = require("../controllers/admin.controller")
+const { openRegister, openLogin, register, login, adminPage } = require("../controllers/admin.controller")
 
 
 const router = Router()
 
-router.get("/openlogin", openLogin)
-router.get("/open/register", openRegister)
+router.get("/login", openLogin)
+router.get("/register", openRegister)
 router.post("/admin/login", login)
 router.post("/admin/register", register)
+router.get('/admin-page', adminPage)
 
 
 module.exports = router;

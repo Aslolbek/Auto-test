@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foydalanuvchilarni Ko'rish</title>
+    <style>
+        /* Sizning oldingi CSS styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa; 
+            color: #004d40;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #00796b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 32px;
+        }
+
+        nav {
+            background-color: #004d40;
+            padding: 12px;
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #00796b;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+            flex-grow: 1;
+        }
+
+        .table-container {
+            width: 80%;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #00796b;
+            color: white;
+        }
+
+        td button {
+            padding: 6px 12px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        td button:hover {
+            background-color: #004d40;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #00796b;
+            color: white;
+            margin-top: auto;
+        }
+
+        /* Responsiv dizayn */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            table {
+                width: 100%;
+            }
+        }
+
+        /* Formlar uchun konteynerni yonma-yon joylashtirish */
+.action-buttons {
+    display: flex;
+    gap: 10px; /* Tugmalar orasidagi masofa */
+}
+
+/* Formlar uchun konteynerni markazda joylashtirish */
+.action-buttons {
+    display: flex;
+    justify-content: center; /* Tugmalarni gorizontal markazda joylashtirish */
+    align-items: center; /* Tugmalarni vertikal markazda joylashtirish */
+    gap: 10px; /* Tugmalar orasidagi masofa */
+}
+
+/* Tugmalarni yanada o'ziga xos qilish uchun */
+.action-buttons form button {
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #00796b; /* Yashil rang */
+    color: white;
+    border: none;
+}
+
+.action-buttons form button:hover {
+    background-color: #004d40; /* Hover effektida to'q yashil rang */
+}
+
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>Foydalanuvchilarni Ko'rish</h1>
+    </header>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <a href="/admin-page">Bosh sahifa</a>
+        <a href="/subject">Mavzu yaratish</a>
+        <a href="/test">Test yaratish</a>
+    </nav>
+
+    <!-- Foydalanuvchilar Jadvali -->
+    <div class="container">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Rol</th>
+                        <th>Amallar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %> <!-- Foydalanuvchilarni dinamik ravishda chiqarish -->
+                        <tr>
+                            <td><%= user._id %></td>
+                            <td><%= user.username %></td>
+                            <td><%= user.role %></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <!-- Yangilash tugmasi (PUT so'rovi) -->
+                                        <!-- <form action="/user/update/<%= user._id %>?_method=PUT" method="POST">
+                                            <button type="submit">Yangilash</button>
+                                        </form> -->
+
+                                        <!-- O‘chirish tugmasi (DELETE so‘rovi) -->
+                                        <form action="/user/delete/<%= user._id %>?_method=DELETE" method="POST">
+                                            <button type="submit" style="background-color: red; color: white;">O‘chirish</button>
+                                        </form>
+                                </div>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>&copy; 2025 Admin Panel</p>
+    </div>
+
+ 
+    
+    
+
+</body>
+</html>

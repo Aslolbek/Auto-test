@@ -1,4 +1,5 @@
-const {Bot, InlineKeyboard} = require("grammy")
+const {Bot, InlineKeyboard} = require("grammy");
+const User = require("./models/users.model");
 
 require('dotenv').config()
 

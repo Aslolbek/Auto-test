@@ -63,9 +63,22 @@ const login = async (req, res) => {
     }
 }
 
+const adminPage = async (req, res) => {
+    try {
+        const subjectCount = await subjectModel.countDocuments(); // Mavzular soni
+                const testCount = await testModel.countDocuments(); // Testlar soni
+                const userCount = await usersModel.countDocuments();
+                res.render("admin-panel",{subjectCount, testCount,userCount })
+    } catch (error) {
+        res.status(400).json({message: error.message})
+        
+    }
+}
+
 module.exports = {
     openLogin,
     openRegister,
     register,
-    login
+    login,
+    adminPage
 }

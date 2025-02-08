@@ -1,6 +1,6 @@
 const subjectModel = require("../models/subject.model")
 
-const Subject = async (req, res) =>{
+const subjectPage = async (req, res) =>{
     try {
         res.render("add-topic")
     } catch (error) {
@@ -8,7 +8,7 @@ const Subject = async (req, res) =>{
     }
 }
 
-const subjectAll = async (req, res) => {
+const subjects = async (req, res) => {
     try {
         const topics = await subjectModel.find(); // Bazadan mavzularni olish
         // console.log(topics)
@@ -30,9 +30,29 @@ const subjectCreate = async (req, res) => {
     }
 }
 
+const subjectAll = async (req, res) =>{
+    try {
+        const topics = await subjectModel.find();
+        res.render('admin-view-topics', { topics } )
+    } catch (error) {
+        
+    }
+}
+
+deleteSubject = async (req, res) => {
+    try {
+      const Id = req.params.id;
+      await subjectModel.findByIdAndDelete(Id);
+      res.redirect('/admin/subject/all'); 
+    } catch (error) {
+      res.status(500).send('Foydalanuvchini o\'chirishda xatolik');
+    }
+  };
 
 module.exports = {
-    Subject,
+    subjectPage,
     subjectCreate,
-    subjectAll
+    subjects,
+    subjectAll,
+    deleteSubject
 }

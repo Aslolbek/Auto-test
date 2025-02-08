@@ -13,7 +13,7 @@ const testList = async (req, res) =>{
     }
 }
 
-const testSubmit = async (req, res) =>{
+const testPage = async (req, res) =>{
     try {
         const subjects = await subjectModel.find()
         res.render("create-test", { subjects })
@@ -44,6 +44,6 @@ const testCreate = async (req, res) => {
 
 module.exports = {
     testList,
-    testSubmit,
+    testPage,
     testCreate
 }
