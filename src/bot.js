@@ -9,24 +9,35 @@ bot.command("start", async (ctx) => {
     try {
         const telegramId = ctx.from.id;
     const username = ctx.from.username;
-    console.log("hato")
-    const response = await fetch("http://localhost:2000/telegram/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ telegramId, username }),
-    });
-    const data = await response.json();
-    await ctx.reply("Menyuni tanlang:", {
-                reply_markup: {
-                    keyboard: [
-                        [ { text: "Mavzular" , web_app: { url: "https://172.26.208.1:2000/getsubject" }, }],
-                        [ { text: "Obunani aktivlashtrish!" }],
-                        [ { text: "Bot haqida!" }],
-                    ],
-                    resize_keyboard: true,
-                    one_time_keyboard: true,
-                },
-            });
+    let user = await User.findOne({ telegramId });
+    
+      if (!user) {
+        user = new User({ telegramId, username });
+        await user.save();
+        await ctx.reply("Menyuni tanlang:", {
+            reply_markup: {
+                keyboard: [
+                    [ { text: "Mavzular" , web_app: { url: "https://172.26.208.1:2000/getsubject" }, }],
+                    [ { text: "Obunani aktivlashtrish!" }],
+                    [ { text: "Bot haqida!" }],
+                ],
+                resize_keyboard: true,
+                one_time_keyboard: true,
+            },
+        });
+      } else {
+        await ctx.reply("Menyuni tanlang:", {
+                    reply_markup: {
+                        keyboard: [
+                            [ { text: "Mavzular" , web_app: { url: "https://172.26.208.1:2000/getsubject" }, }],
+                            [ { text: "Obunani aktivlashtrish!" }],
+                            [ { text: "Bot haqida!" }],
+                        ],
+                        resize_keyboard: true,
+                        one_time_keyboard: true,
+                    },
+                });
+      }
     } catch (error) {
         console.log(error);
     }
