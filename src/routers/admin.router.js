@@ -4,11 +4,11 @@ const { openRegister, openLogin, register, login, adminPage } = require("../cont
 
 const router = Router()
 
+router.get('/admin-page', adminPage)
 router.get("/login", openLogin)
 router.get("/register", openRegister)
 router.post("/admin/login", login)
 router.post("/admin/register", register)
-router.get('/admin-page', adminPage)
 
 
 module.exports = router;
