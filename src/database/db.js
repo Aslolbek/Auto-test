@@ -1,8 +1,9 @@
 const { connect } = require("mongoose")
 
+const db = process.env.DB
 async function connectDB() {
     try {
-        await connect(`mongodb://127.0.0.1:27017/avtoexam`, {
+        await connect(`${db}`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
           });
