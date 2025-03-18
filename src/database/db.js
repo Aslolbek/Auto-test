@@ -3,7 +3,7 @@ const { connect } = require("mongoose")
 const db = process.env.DB
 async function connectDB() {
     try {
-        await connect(`${db}`, {
+        await connect(`mongodb+srv://asrorabdimannonov363:<cYPPPNL9lThRQ5PF>@mycluster.agbfq.mongodb.net/?retryWrites=true&w=majority&appName=MyCluster`, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
           });

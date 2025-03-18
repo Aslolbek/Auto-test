@@ -3,8 +3,8 @@ require("dotenv").config()
 const {env}=process
 
  const config = {
-    Key: env.SECRET_KEY,
-    PORT : +env.PORT
+    Key: 'topolmaysan',
+    PORT : 2000
 }
 
 module.exports=config

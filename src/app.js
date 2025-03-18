@@ -21,7 +21,7 @@ app.use(bodyparser.urlencoded({ extended: true }))
 app.use(bodyparser.json())
 app.use(router);
 connectDB()
-const PORT = process.env.PORT
+const PORT = 2000
 
 app.listen(PORT, () => {
     console.log(`${PORT}  ishlamoqda...`)
